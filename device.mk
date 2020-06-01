@@ -19,3 +19,16 @@
 LOCAL_PATH := device/xiaomi/umi
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
+# Bootctrl
+PRODUCT_PACKAGES += \
+    bootctrl.sm8250 \
+    bootctrl.sm8250.recovery \
+    android.hardware.boot@1.0-service \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-impl.recovery \
+    android.hardware.boot@1.0-impl-wrapper.recovery \
+    android.hardware.fastboot@1.0-impl-mock.recovery
+
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += \
+    $(DEVICE_PATH)
