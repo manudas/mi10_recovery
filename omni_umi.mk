@@ -28,6 +28,8 @@ $(call inherit-product, device/xiaomi/umi/device.mk)
 # Inherit some common PitchBlack stuff.
 $(call inherit-product, vendor/pb/config/common.mk)
 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root) \
+    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := umi
 PRODUCT_NAME := omni_umi

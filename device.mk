@@ -17,4 +17,5 @@
 #
 
 LOCAL_PATH := device/xiaomi/umi
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
