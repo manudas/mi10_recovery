@@ -33,7 +33,6 @@ TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
-TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
 
 # Assert
@@ -72,7 +71,6 @@ TARGET_KERNEL_SOURCE := kernel/xiaomi/umi
 TARGET_KERNEL_CONFIG := umi_defconfig
 
 # Platform
-TARGET_BOARD_PLATFORM := kona
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
