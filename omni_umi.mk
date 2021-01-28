@@ -28,8 +28,8 @@ $(call inherit-product, device/xiaomi/umi/device.mk)
 # Inherit some common PitchBlack stuff.
 $(call inherit-product, vendor/pb/config/common.mk)
 
-PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root) \
-    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root)
+#    $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img 
     
 # HACK: Set vendor patch level
 PRODUCT_PROPERTY_OVERRIDES += \
