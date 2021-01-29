@@ -28,9 +28,6 @@ $(call inherit-product, device/xiaomi/umi/device.mk)
 # Inherit some common PitchBlack stuff.
 $(call inherit-product, vendor/pb/config/common.mk)
 
-# Inherit from hardware-specific part of the product configuration
-$(call inherit-product, $(DEVICE_PATH)/device.mk)
-
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root) \
     $(LOCAL_PATH)/prebuilt/dtb.img:dtb.img
 
