@@ -27,6 +27,8 @@ odm               /odm        ext4                                       display
 /tz               emmc        /dev/block/bootdevice/by-name/tz           flags=display="Tz";backup=1;flashimg=1
 /vbmeta           emmc        /dev/block/bootdevice/by-name/vbmeta       flags=display="Vbmeta";backup=1;flashimg=1
 /misc             emmc        /dev/block/bootdevice/by-name/misc
+/exaid            emmc        /dev/block/bootdevice/by-name/exaid        defaults                       defaults,backup,flashimg
+/spunvm           vfat        /dev/block/bootdevice/by-name/spunvm       rw,noatime,shortname=lower,uid=1000,gid=1000,dmask=007,fmask=007,context=u:object_r:spunvm_file:s0 wait,backup,flashimg
 /keystore         emmc        /dev/block/bootdevice/by-name/keystore
 /ssd              emmc        /dev/block/bootdevice/by-name/ssd
 /frp              emmc        /dev/block/bootdevice/by-name/frp
