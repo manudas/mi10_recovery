@@ -51,11 +51,10 @@ on fs
 on early-fs
     start vold
 
-on fs
+on init
     start hwservicemanager
-    start servicemanager
+    #setprop crypto.ready 1
 
-# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
 service sbinqseecomd /sbin/qseecomd
     user root
     group root
@@ -64,7 +63,7 @@ service sbinqseecomd /sbin/qseecomd
 
 service hwservicemanager /sbin/hwservicemanager
     user root
-    group root readproc
+    group root
     disabled
     onrestart setprop hwservicemanager.ready false
     seclabel u:r:recovery:s0
@@ -82,6 +81,7 @@ service keystore_auth /sbin/keystore_auth
     disabled
     seclabel u:r:recovery:s0
 
+# keystore is started and stopped on demand by TWRP
 service keystore /sbin/keystore /tmp/misc/keystore
     user root
     group root drmrpc readproc
@@ -96,71 +96,30 @@ service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
 
 service keymaster-4-0 /sbin/android.hardware.keymaster@4.0-service-qti
     user root
-    group root drmrpc
+    group root
     disabled
     seclabel u:r:recovery:s0
 
-service vendor.qti.vibrator-1-2 /sbin/vendor.qti.hardware.vibrator@1.2-service
+service vendor.qti.vibrator /sbin/vendor.qti.hardware.vibrator.service
     class hal
     user system
     group system input
     seclabel u:r:recovery:s0
 
-####
-on property:hwservicemanager.ready=true
+on boot
+    #start vendor.qti.vibrator
+    setprop sys.usb.config adb
+
+on property:crypto.ready=0
+    stop sbinqseecomd
+    stop keymaster-4-0
+    stop gatekeeper-1-0
+    stop servicemanager
+
+on property:crypto.ready=1
     start sbinqseecomd
 
 on property:vendor.sys.listeners.registered=true
-    wait /sbin/fingerprint_ready 8
     start keymaster-4-0
     start gatekeeper-1-0
-
-on property:ro.crypto.state=unsupported
-    stop sbinqseecomd
-    stop keymaster-4-0
-    stop gatekeeper-1-0
-    #stop servicemanager
-    stop hwservicemanager
-
-on property:ro.crypto.state=unencrypted
-    stop sbinqseecomd
-    stop keymaster-4-0
-    stop gatekeeper-1-0
-    #stop servicemanager
-    stop hwservicemanager
-
-on property:twrp.decrypt.done=true && property:twrp.all.users.decrypted=true
-    stop sbinqseecomd
-    stop keymaster-4-0
-    stop gatekeeper-1-0
-    #stop servicemanager
-    stop hwservicemanager
-
-on early-init
-    setprop recovery.perf.mode 1
-
-on boot
-    start vendor.qti.vibrator-1-2
-    setprop recovery.perf.mode 0
-    # Enable double-tap to wake
-    #write /sys/devices/virtual/touch/tp_dev/gesture_on 1
-    # Enable OTG
-    #write /sys/class/power_supply/usb/otg_switch 1
-
-on property:recovery.perf.mode=1
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu5/online 1
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 1
-
-on property:recovery.perf.mode=0
-    write /sys/devices/system/cpu/cpu1/online 0
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 0
-    write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu5/online 0
-    write /sys/devices/system/cpu/cpu6/online 1
-    write /sys/devices/system/cpu/cpu7/online 0
+    start servicemanager
